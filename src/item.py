@@ -69,3 +69,8 @@ class Item:
         статический метод, возвращающий число из числа-строки
         """
         return int(float(string))
+
+    def __add__(self, other):
+        if not isinstance(other, Item):
+            raise ValueError('Складывать можно только объекты Item и Phone.')
+        return self.quantity + other.quantity
