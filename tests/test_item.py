@@ -53,3 +53,7 @@ def test_add(item_1, phone_1):
     assert item_1 + item_1 == 10
     assert item_1 + phone_1 == 12
     assert phone_1 + phone_1 == 14
+
+def test_add_other(item_1):
+    with pytest.raises(ValueError):
+        item_1 + 5
