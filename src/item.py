@@ -56,11 +56,19 @@ class Item:
         """
         класс-метод, инициализирующий экземпляры класса Item данными из файла src/items.csv
         """
-        cls.all = []
-        with open(csv_file, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            for i in reader:
-                cls(i['name'], i['price'], i['quantity'])
+        try:
+            open(csv_file, 'r', encoding='utf-8')
+        except FileNotFoundError:
+            print('Отсутствует файл item.csv')
+        else:
+            cls.all = []
+            with open(csv_file, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for i in reader:
+                    if 'name' not in i or 'price' not in i or 'quantity' not in i:
+                        raise InstantiateCSVError('Файл item.csv поврежден')
+                    else:
+                        cls(i['name'], i['price'], i['quantity'])
 
     @staticmethod
     def string_to_number(string: str) -> int:
@@ -73,3 +81,12 @@ class Item:
         if not isinstance(other, Item):
             raise ValueError('Складывать можно только объекты Item и Phone.')
         return self.quantity + other.quantity
+
+
+class InstantiateCSVError(Exception):
+    """
+    Класс ошибки при отсутствии одной из колонок в файле items
+    """
+
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else 'Файл item.csv поврежден'
