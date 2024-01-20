@@ -14,6 +14,6 @@ def test_str_repr_phone(phone_1):
     assert phone_1.number_of_sim == 2
 
 
-def test_phone__error_number_of_sim():
+def test_phone__error_number_of_sim(phone_1):
     with pytest.raises(ValueError):
         phone_1.number_of_sim = 0
